@@ -4,8 +4,8 @@ from sqlalchemy.orm import sessionmaker
 
 # Configuración de la URL de la base de datos
 SQLALCHEMY_DATABASE_URL = (
-    #"postgresql+psycopg2://hector:tu_contraseña_fuerte@44.206.97.188:5432/urbanevolution"
-    "postgresql+psycopg2://hector:@localhost:5432/UrbanEvolution"
+    "postgresql+psycopg2://hector:tu_contraseña_fuerte@44.206.97.188:5432/urbanevolution"
+    #"postgresql+psycopg2://hector:@localhost:5432/UrbanEvolution"
 )
 
 # Crear el motor de la base de datos
