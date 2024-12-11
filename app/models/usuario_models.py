@@ -9,5 +9,7 @@ class Usuario(Base):
     apellido_p = Column(String, nullable=False)
     apellido_m = Column(String)
     edad = Column(Integer, nullable=False)
+    correo = Column(String, nullable=True)  # Nueva columna
+    contrasena = Column(String, nullable=True)  # Nueva columna
     correo_id = Column(Integer, ForeignKey("correo.correo_id", ondelete="CASCADE"))
     contrasena_id = Column(Integer, ForeignKey("contrasena.contrasena_id", ondelete="CASCADE"))

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas.usuarios_schmas import UsuarioCreate, Usuario
+from app.schemas.usuarios_schmas import UsuarioCreate, Usuario,UsuarioDetalle
 from app.controllers.usuario import  (
     create_usuario,
     get_usuario,
@@ -42,3 +42,13 @@ def update_usuario_endpoint(usuario_id: int, usuario: UsuarioCreate, db: Session
 @router.delete("/{usuario_id}")
 def delete_usuario_endpoint(usuario_id: int, db: Session = Depends(get_db)):
     return delete_usuario(db, usuario_id)
+
+@router.get("/detalles/", response_model=list[UsuarioDetalle])
+def read_usuarios_detalles(db: Session = Depends(get_db)):
+    query = db.execute("""
+        SELECT u.usuario_id, u.nombre, u.apellido_p, u.apellido_m, u.edad, c.correo, p.contrasena
+        FROM usuario u
+        JOIN correo c ON u.correo_id = c.correo_id
+        JOIN contrasena p ON u.contrasena_id = p.contrasena_id
+    """)
+    return query.fetchall()

@@ -27,7 +27,7 @@ Base.metadata.create_all(bind=engine)
 
 # Registro de los routers
 app.include_router(usuario_routers.router, prefix="/usuarios", tags=["Usuarios"])
-app.include_router(comentarios_routers.router, prefix="/comentarios", tags=["Comentarios"])
+app.include_router(comentarios_routers.router, prefix="/comentarios", tags=["Comentarios Detalles"])
 app.include_router(direccion_routers.router, prefix="/direcciones", tags=["Direcciones"])
 app.include_router(imagenes_routers.router, prefix="/imagenes", tags=["Imágenes"])
 app.include_router(post_routers.router, prefix="/posts", tags=["Posts"])

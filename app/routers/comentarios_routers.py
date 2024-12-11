@@ -14,7 +14,17 @@ router = APIRouter()
 
 @router.post("/", response_model=Comentarios)
 def create_comentario_endpoint(comentario: ComentariosCreate, db: Session = Depends(get_db)):
-    return create_comentario(db, comentario)
+    new_comment = {
+        "comentario": comentario.comentario,
+        "post_id": comentario.post_id
+    }
+    result = db.execute("""
+        INSERT INTO comentarios (comentario, post_id)
+        VALUES (:comentario, :post_id)
+        RETURNING comentarios_id
+    """, new_comment)
+    db.commit()
+    return result.fetchone()
 
 @router.get("/{comentario_id}", response_model=Comentarios)
 def read_comentario(comentario_id: int, db: Session = Depends(get_db)):

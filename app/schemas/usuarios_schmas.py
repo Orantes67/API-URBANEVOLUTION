@@ -17,3 +17,14 @@ class Usuario(UsuarioBase):
 
     class Config:
          from_attributes = True 
+class UsuarioDetalle(BaseModel):
+    usuario_id: int
+    nombre: str
+    apellido_p: str
+    apellido_m: Optional[str] = None
+    edad: int
+    correo: str
+    contrasena: str
+
+    class Config:
+        from_attributes = True
