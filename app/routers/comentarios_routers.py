@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from app.models.post_models import Post
 from app.schemas.comentarios_schmas import ComentariosCreate, Comentarios
 from app.controllers.comentarios import (
     create_comentario,
@@ -14,17 +15,15 @@ router = APIRouter()
 
 @router.post("/", response_model=Comentarios)
 def create_comentario_endpoint(comentario: ComentariosCreate, db: Session = Depends(get_db)):
-    new_comment = {
-        "comentario": comentario.comentario,
-        "post_id": comentario.post_id
-    }
-    result = db.execute("""
-        INSERT INTO comentarios (comentario, post_id)
-        VALUES (:comentario, :post_id)
-        RETURNING comentarios_id
-    """, new_comment)
-    db.commit()
-    return result.fetchone()
+   
+    post = db.query(Post).filter(Post.post_id == comentario.post_id).first()
+    if not post:
+        raise HTTPException(status_code=404, detail="El post asociado no existe")
+
+    try:
+        return create_comentario(db, comentario)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error al crear el comentario: {str(e)}")
 
 @router.get("/{comentario_id}", response_model=Comentarios)
 def read_comentario(comentario_id: int, db: Session = Depends(get_db)):
